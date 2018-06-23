@@ -7,6 +7,7 @@ namespace FunExt.Lib
         public static Maybe<T> Some<T>(T value) =>
             new Some<T>(value);
 
-        public static None None => None.Default;
+        public static None None =>
+            new None();
     }
 }

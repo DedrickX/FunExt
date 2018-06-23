@@ -3,7 +3,7 @@ namespace FunExt.Lib
     namespace Maybe
     {
         /// <summary>
-        /// Some value of T. 
+        /// Some value of T.
         /// To be used with Union Types like <see cref="Maybe{T}"/>.
         /// </summary>
         public sealed class Some<T>

@@ -1,15 +1,61 @@
 {
     "version": "2.0.0",
     "tasks": [
+
+        // ----- Lib -----
         {
-            "label": "build",
+            "label": "Build Lib",
+            "group": "build",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/FunExt.Lib/FunExt.Lib.csproj"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": "$msCompile"
+        },
+
+        // ----- Tests -----
+        {
+            "label": "Build Tests",
+            "group": "build",
             "command": "dotnet",
             "type": "process",
             "args": [
                 "build",
                 "${workspaceFolder}/FunExt.Tests/FunExt.Tests.csproj"
             ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
             "problemMatcher": "$msCompile"
-        }
+        },
+
+        {
+            "label": "Run Tests",
+            "group": "test",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "test",
+                "${workspaceFolder}/FunExt.Tests/"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated"
+            },
+            "problemMatcher": "$msCompile"
+        },
     ]
 }

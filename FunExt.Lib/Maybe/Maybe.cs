@@ -6,7 +6,7 @@ namespace FunExt.Lib
     /// Union Type representing possible value of T
     /// </summary>
     /// <remarks>
-    /// Instance can be in two possible states:
+    /// Instance can be in two states:
     ///    - <see cref="Lib.Maybe.Some{T}"/>
     ///    - <see cref="Lib.Maybe.None"/>
     /// </remarks>
