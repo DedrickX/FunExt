@@ -7,8 +7,8 @@ namespace FunExt.Lib
     /// </summary>
     /// <remarks>
     /// Instance can be in two states:
-    ///    - <see cref="Lib.Common.Some{T}"/>
-    ///    - <see cref="Lib.Common.Error{T}"/>
+    ///    - Success <see cref="Lib.Common.Some{T}"/>
+    ///    - Error <see cref="Lib.Common.Error{T}"/>
     /// </remarks>
     public class Result<TResult, TError>
     {
@@ -40,5 +40,14 @@ namespace FunExt.Lib
 
         public static implicit operator Result<TResult, TError>(Common.Error<TError> error) =>
              new Result<TResult, TError>(false, default(TResult), error.ErrorValue);
+
+        /// <summary>
+        /// Performing function depending on Union value.
+        /// </summary>
+        /// <param name="ifSuccess">Function executed when value is <see cref="Common.Some{T}"/></param>
+        /// <param name="ifError">Function executed when value is <see cref="Common.Error{T}"/></param>
+        public R Match<R>(Func<TResult, R> ifSuccess, Func<TError, R> ifError) =>
+            IsSuccess ? ifSuccess(_result) :
+            ifError(_error);
     }
 }

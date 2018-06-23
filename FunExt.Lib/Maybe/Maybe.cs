@@ -34,10 +34,20 @@ namespace FunExt.Lib
             IsSome ? _value :
             throw new InvalidOperationException("Value is None!");
 
+
         public static implicit operator Maybe<T>(Common.None _) =>
             new Maybe<T>(false, default(T));
 
         public static implicit operator Maybe<T>(Common.Some<T> some) =>
             new Maybe<T>(true, some.Value);
+
+        /// <summary>
+        /// Performing function depending on Union value.
+        /// </summary>
+        /// <param name="ifSome">Function executed when value is <see cref="Common.Some{T}"/></param>
+        /// <param name="ifNone">Function executed when value is <see cref="Common.None"/></param>
+        public R Match<R>(Func<T, R> ifSome, Func<R> ifNone) =>
+            IsSome ? ifSome(_value) :
+            ifNone();
     }
 }

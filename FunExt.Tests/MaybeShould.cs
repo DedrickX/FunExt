@@ -11,38 +11,62 @@ namespace FunExt.Tests
         [Fact]
         public void BeUsedWithSomeType()
         {
-            Maybe<int> some = F.Some(10);
+            Maybe<int> someMaybe = F.Some(10);
 
-            some.IsSome.Should().Be(true);
-            some.IsNone.Should().Be(false);
-            some.GetValue().Should().Be(10);
+            someMaybe.IsSome.Should().Be(true);
+            someMaybe.IsNone.Should().Be(false);
+            someMaybe.GetValue().Should().Be(10);
         }
 
         [Fact]
         public void BeUsedWithSuccessType()
         {
-            Maybe<int> some = F.Success(10);
-            some.GetValue().Should().Be(10);
+            Maybe<int> someMaybe = F.Success(10);
+            someMaybe.GetValue().Should().Be(10);
         }
 
         [Fact]
         public void BeUsedWithNoneType()
         {
-            Maybe<int> none = F.None;
+            Maybe<int> noneMaybe = F.None;
 
-            none.IsSome.Should().Be(false);
-            none.IsNone.Should().Be(true);
+            noneMaybe.IsSome.Should().Be(false);
+            noneMaybe.IsNone.Should().Be(true);
         }
 
         [Fact]
         public void ThrowExceptionWhenAccessingToNoneValue()
         {
-            Maybe<int> none = F.None;
+            Maybe<int> noneMaybe = F.None;
 
-            none
+            noneMaybe
                 .Invoking(x => x.GetValue())
                 .Should()
                 .Throw<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void BeMatchedWhenSome()
+        {
+            Maybe<int> someMaybe = F.Some(10);
+
+            var result = someMaybe.Match(
+                ifSome: x => x,
+                ifNone: () => throw new Exception("Value is none!")
+            );
+            result.Should().Be(10);
+        }
+
+        [Fact]
+        public void BeMatchedWhenNone()
+        {
+            Maybe<int> noneMaybe = F.None;
+
+            var result = noneMaybe.Match(
+                ifSome: x => throw new Exception("Value is Some!"),
+                ifNone: () => "Ok"
+            );
+            result.Should().Be("Ok");
         }
     }
 }

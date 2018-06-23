@@ -2,7 +2,7 @@ namespace FunExt.Lib.Common
 {
     /// <summary>
     /// Error value of T.
-    /// To be used with Union Types.
+    /// To be used with Union Types like <see cref="Result{TResult, TError}"/>.
     /// </summary>
     public sealed class Error<T>
     {
