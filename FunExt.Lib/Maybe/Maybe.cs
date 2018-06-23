@@ -7,26 +7,14 @@ namespace FunExt.Lib
     /// </summary>
     /// <remarks>
     /// Instance can be in two states:
-    ///    - <see cref="Lib.Maybe.Some{T}"/>
-    ///    - <see cref="Lib.Maybe.None"/>
+    ///    - <see cref="Lib.Common.Some{T}"/>
+    ///    - <see cref="Lib.Common.None"/>
     /// </remarks>
     public sealed class Maybe<T>
     {
-        /// <summary>
-        /// None ctor
-        /// </summary>
-        private Maybe()
+        private Maybe(bool isSome, T value)
         {
-            IsSome = false;
-            _value = default(T);
-        }
-
-        /// <summary>
-        /// Some ctor
-        /// </summary>
-        private Maybe(T value)
-        {
-            IsSome = true;
+            IsSome = isSome;
             _value = value;
         }
 
@@ -46,10 +34,10 @@ namespace FunExt.Lib
             IsSome ? _value :
             throw new InvalidOperationException("Value is None!");
 
-        public static implicit operator Maybe<T>(Maybe.None _) =>
-            new Maybe<T>();
+        public static implicit operator Maybe<T>(Common.None _) =>
+            new Maybe<T>(false, default(T));
 
-        public static implicit operator Maybe<T>(Maybe.Some<T> some) =>
-            new Maybe<T>(some.Value);
+        public static implicit operator Maybe<T>(Common.Some<T> some) =>
+            new Maybe<T>(true, some.Value);
     }
 }
