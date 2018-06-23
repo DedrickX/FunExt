@@ -1,12 +1,13 @@
 using System;
 using Xunit;
+using FluentAssertions;
 
 namespace FunExt.Tests
 {
-    public class OptionShould
+    public class MaybeShould
     {
         [Fact]
-        public void Test1()
+        public void BeUsedWithSomeAndNoneTypes()
         {
 
         }
