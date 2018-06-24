@@ -33,12 +33,5 @@ namespace FunExt.Lib
         public T GetValue() =>
             IsSome ? _value :
             throw new InvalidOperationException("Value is None!");
-
-
-        public static implicit operator Maybe<T>(Common.None _) =>
-            new Maybe<T>(false, default(T));
-
-        public static implicit operator Maybe<T>(Common.Some<T> some) =>
-            new Maybe<T>(true, some.Value);
     }
 }
