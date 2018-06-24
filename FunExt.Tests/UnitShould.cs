@@ -29,15 +29,6 @@ namespace FunExt.Tests
         }
 
         [Fact]
-        void BeSingleton()
-        {
-            var unit1 = F.Unit;
-            var unit2 = F.Unit;
-
-            unit1.Should().BeSameAs(unit2);
-        }
-
-        [Fact]
         void HaveExactHashCode()
         {
             var unit1 = F.Unit;

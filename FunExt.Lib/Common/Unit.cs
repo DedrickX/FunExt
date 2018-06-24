@@ -2,27 +2,36 @@ using System;
 
 namespace FunExt.Lib.Common
 {
-    public sealed class Unit : IEquatable<Unit>, IComparable
+public struct Unit : IEquatable<Unit>, IComparable<Unit>
     {
-        private Unit()
-        {}
+        public static readonly Unit Default = new Unit();
 
-        public static Unit Instance
-        {
-            get
-            {
-                if (_instance == null) _instance = new Unit();
-                return _instance;
-            }
-        }
-        private static Unit _instance;
+        public override int GetHashCode() => 0;
+
+        public override bool Equals(object obj) => obj is Unit;
+
+        public override string ToString() => "()";
 
         public bool Equals(Unit other) => true;
 
-        public int CompareTo(object obj) => CompareTo(obj as Unit);
+        public int CompareTo(Unit other) => 0;
 
-        private int CompareTo(Unit obj) => 0;
+        public static bool operator ==(Unit lhs, Unit rhs) =>
+            true;
 
-        public override int GetHashCode() => 1;
+        public static bool operator !=(Unit lhs, Unit rhs) =>
+            false;
+
+        public static bool operator >(Unit lhs, Unit rhs) =>
+            false;
+
+        public static bool operator >=(Unit lhs, Unit rhs) =>
+            true;
+
+        public static bool operator <(Unit lhs, Unit rhs) =>
+            false;
+
+        public static bool operator <=(Unit lhs, Unit rhs) =>
+            true;
     }
 }

@@ -8,7 +8,7 @@ namespace FunExt.Lib
     {
         public static Common.Unit Unit
         {
-            get => Common.Unit.Instance;
+            get => Common.Unit.Default;
         }
     }
 }
