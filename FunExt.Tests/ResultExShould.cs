@@ -4,6 +4,7 @@ using FluentAssertions;
 
 using FunExt.Lib;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace FunExt.Tests
 {
@@ -79,6 +80,47 @@ namespace FunExt.Tests
         {
             ResultEx<int> errorResult = F.Error(new Exception());
             (from val in errorResult select val).Count().Should().Be(0);
+        }
+
+        [Fact]
+        public void BeEquatableWhenContainsSuccessValue()
+        {
+            ResultEx<int> successResult1 = F.Success(10);
+            ResultEx<int> successResult2 = F.Success(10);
+
+            (successResult1.Equals(successResult2)).Should().BeTrue();
+            (successResult1 == successResult2).Should().BeTrue();
+
+            ResultEx<int> successResult3 = F.Success(20);
+            (successResult1 != successResult3).Should().BeTrue();
+        }
+
+        [Fact]
+        public void BeEquatableWhenContainsSuccessObject()
+        {
+            var obj = new List<string>();
+            ResultEx<List<string>> successResult1 = F.Success(obj);
+            ResultEx<List<string>> successResult2 = F.Success(obj);
+
+            (successResult1.Equals(successResult2)).Should().BeTrue();
+            (successResult1 == successResult2).Should().BeTrue();
+
+            ResultEx<List<string>> successResult3 = F.Success(new List<string>());
+            (successResult1 != successResult3).Should().BeTrue();
+        }
+
+        [Fact]
+        public void BeEquatableWhenContainsError()
+        {
+            var obj = new Exception("hello");
+            ResultEx<int> errorResult1 = F.Error(obj);
+            ResultEx<int> errorResult2 = F.Error(obj);
+
+            (errorResult1.Equals(errorResult2)).Should().BeTrue();
+            (errorResult1 == errorResult2).Should().BeTrue();
+
+            ResultEx<int> errorResult3 = F.Error(new Exception("hi"));
+            (errorResult1 != errorResult3).Should().BeTrue();
         }
     }
 }

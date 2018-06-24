@@ -23,9 +23,9 @@ namespace FunExt.Lib
 
         public bool IsError { get => !IsSuccess; }
 
-        private readonly TError _error;
+        protected readonly TError _error;
 
-        private readonly TResult _result;
+        protected readonly TResult _result;
 
         public TResult GetSuccess() =>
             IsSuccess ? _result :

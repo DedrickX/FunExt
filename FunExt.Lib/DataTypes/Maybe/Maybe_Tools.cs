@@ -14,7 +14,8 @@ namespace FunExt.Lib
             ((IsSome && other.IsSome) && (_value.Equals(other._value)));
 
         public override int GetHashCode() =>
-            _value.GetHashCode();
+            IsSome ? _value.GetHashCode() :
+            0;
 
         public static bool operator ==(Maybe<T> @this, Maybe<T> other) =>
             @this.Equals(other);
