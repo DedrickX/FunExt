@@ -3,6 +3,7 @@ using Xunit;
 using FluentAssertions;
 
 using FunExt.Lib;
+using System.Linq;
 
 namespace FunExt.Tests
 {
@@ -63,6 +64,21 @@ namespace FunExt.Tests
                 ifError: x => x
             );
             result.Should().BeSameAs(ex);
+        }
+
+        [Fact]
+        public void BeEnumerableWhenSuccess()
+        {
+            ResultEx<int> successResult = F.Success(10);
+            (from val in successResult select val).First().Should().Be(10);
+            (from val in successResult select val).Count().Should().Be(1);
+        }
+
+        [Fact]
+        public void BeEnumerableWhenError()
+        {
+            ResultEx<int> errorResult = F.Error(new Exception());
+            (from val in errorResult select val).Count().Should().Be(0);
         }
     }
 }

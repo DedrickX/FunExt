@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Xunit;
 using FluentAssertions;
 
@@ -67,6 +68,21 @@ namespace FunExt.Tests
                 ifNone: () => "Ok"
             );
             result.Should().Be("Ok");
+        }
+
+        [Fact]
+        public void BeEnumerableWhenSome()
+        {
+            Maybe<int> someMaybe = F.Some(10);
+            (from val in someMaybe select val).First().Should().Be(10);
+            (from val in someMaybe select val).Count().Should().Be(1);
+        }
+
+        [Fact]
+        public void BeEnumerableWhenNone()
+        {
+            Maybe<int> noneMaybe = F.None;
+            (from val in noneMaybe select val).Count().Should().Be(0);
         }
     }
 }

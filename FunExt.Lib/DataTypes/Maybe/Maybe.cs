@@ -10,7 +10,7 @@ namespace FunExt.Lib
     ///    - <see cref="Lib.Common.Some{T}"/>
     ///    - <see cref="Lib.Common.None"/>
     /// </remarks>
-    public sealed class Maybe<T>
+    public sealed partial class Maybe<T>
     {
         private Maybe(bool isSome, T value)
         {
@@ -40,14 +40,5 @@ namespace FunExt.Lib
 
         public static implicit operator Maybe<T>(Common.Some<T> some) =>
             new Maybe<T>(true, some.Value);
-
-        /// <summary>
-        /// Performing function depending on Union value.
-        /// </summary>
-        /// <param name="ifSome">Function executed when value is <see cref="Common.Some{T}"/></param>
-        /// <param name="ifNone">Function executed when value is <see cref="Common.None"/></param>
-        public R Match<R>(Func<T, R> ifSome, Func<R> ifNone) =>
-            IsSome ? ifSome(_value) :
-            ifNone();
     }
 }
