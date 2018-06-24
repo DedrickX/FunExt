@@ -13,8 +13,8 @@ namespace FunExt.Tests
         {
             Maybe<int> someMaybe = F.Some(10);
 
-            someMaybe.IsSome.Should().Be(true);
-            someMaybe.IsNone.Should().Be(false);
+            someMaybe.IsSome.Should().BeTrue();
+            someMaybe.IsNone.Should().BeFalse();
             someMaybe.GetValue().Should().Be(10);
         }
 
@@ -30,8 +30,8 @@ namespace FunExt.Tests
         {
             Maybe<int> noneMaybe = F.None;
 
-            noneMaybe.IsSome.Should().Be(false);
-            noneMaybe.IsNone.Should().Be(true);
+            noneMaybe.IsSome.Should().BeFalse();
+            noneMaybe.IsNone.Should().BeTrue();
         }
 
         [Fact]

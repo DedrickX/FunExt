@@ -23,8 +23,8 @@ namespace FunExt.Tests
         {
             var ex = new Exception("error");
             ResultEx<int> errorResult = F.Error(ex);
-            errorResult.IsError.Should().Be(true);
-            errorResult.IsSuccess.Should().Be(false);
+            errorResult.IsError.Should().BeTrue();
+            errorResult.IsSuccess.Should().BeFalse();
 
             errorResult.GetError().Should().BeSameAs(ex);
         }
@@ -34,8 +34,8 @@ namespace FunExt.Tests
         {
             var ex = new Exception("error");
             ResultEx<int> errorResult = ex;
-            errorResult.IsError.Should().Be(true);
-            errorResult.IsSuccess.Should().Be(false);
+            errorResult.IsError.Should().BeTrue();
+            errorResult.IsSuccess.Should().BeFalse();
 
             errorResult.GetError().Should().BeSameAs(ex);
         }
