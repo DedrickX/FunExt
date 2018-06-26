@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunExt.Lib", "FunExt.Lib\Fu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunExt.Tests", "FunExt.Tests\FunExt.Tests.csproj", "{8D5C20DF-A652-4061-81F1-20BC7742D134}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleTest", "ConsoleTest\ConsoleTest.csproj", "{2388CA1F-C562-4A46-AB1A-1DBD80976A34}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,5 +46,17 @@ Global
 		{8D5C20DF-A652-4061-81F1-20BC7742D134}.Release|x64.Build.0 = Release|Any CPU
 		{8D5C20DF-A652-4061-81F1-20BC7742D134}.Release|x86.ActiveCfg = Release|Any CPU
 		{8D5C20DF-A652-4061-81F1-20BC7742D134}.Release|x86.Build.0 = Release|Any CPU
+		{2388CA1F-C562-4A46-AB1A-1DBD80976A34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2388CA1F-C562-4A46-AB1A-1DBD80976A34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2388CA1F-C562-4A46-AB1A-1DBD80976A34}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2388CA1F-C562-4A46-AB1A-1DBD80976A34}.Debug|x64.Build.0 = Debug|Any CPU
+		{2388CA1F-C562-4A46-AB1A-1DBD80976A34}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2388CA1F-C562-4A46-AB1A-1DBD80976A34}.Debug|x86.Build.0 = Debug|Any CPU
+		{2388CA1F-C562-4A46-AB1A-1DBD80976A34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2388CA1F-C562-4A46-AB1A-1DBD80976A34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2388CA1F-C562-4A46-AB1A-1DBD80976A34}.Release|x64.ActiveCfg = Release|Any CPU
+		{2388CA1F-C562-4A46-AB1A-1DBD80976A34}.Release|x64.Build.0 = Release|Any CPU
+		{2388CA1F-C562-4A46-AB1A-1DBD80976A34}.Release|x86.ActiveCfg = Release|Any CPU
+		{2388CA1F-C562-4A46-AB1A-1DBD80976A34}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

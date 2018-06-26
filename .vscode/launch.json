@@ -5,6 +5,18 @@
    "version": "0.2.0",
    "configurations": [
         {
+           "name": "ConsoleTest",
+           "type": "coreclr",
+           "request": "launch",
+           "preLaunchTask": "Build ConsoleTest",
+           "program": "${workspaceRoot}/ConsoleTest/bin/Debug/netcoreapp2.1/ConsoleTest.dll",
+           "args": [],
+           "cwd": "${workspaceRoot}",
+           "stopAtEntry": false,
+           "console": "internalConsole"
+        },
+
+        {
             "name": ".NET Core Attach",
             "type": "coreclr",
             "request": "attach",
