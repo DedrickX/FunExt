@@ -143,5 +143,13 @@ namespace FunExt.Tests
             (noneMaybe == F.None).Should().BeTrue();
             (noneMaybe != F.Some(10)).Should().BeTrue();
         }
+
+        [Fact]
+        public void BeUsedWithConditionalExpression()
+        {
+            var path = @"C:\";
+            Maybe<string> x = !string.IsNullOrEmpty(path) ? F.Some("text") : F.None;
+            x.IsSome.Should().BeTrue();
+        }
     }
 }
