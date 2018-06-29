@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace FunExt.Lib
 {
@@ -7,32 +9,91 @@ namespace FunExt.Lib
     /// </summary>
     /// <remarks>
     /// Instance can be in two states:
-    ///    - Success <see cref="Lib.Common.Some{T}"/>
-    ///    - Error <see cref="Lib.Common.Error{T}"/>
+    ///    - Success
+    ///    - Failure
     /// </remarks>
-    public partial class Result<TResult, TError>
+    public partial class Result<T> :
+        IEnumerable<T>,
+        IEquatable<Result<T>>
     {
-        protected Result(bool isSuccess, TResult result, TError error)
+
+        internal Result(bool isSuccess, T value, Exception ex)
         {
             IsSuccess = isSuccess;
-            _result = result;
-            _error = error;
+            Value = value;
+            Error = ex;
         }
+
 
         public bool IsSuccess { get; }
 
-        public bool IsError { get => !IsSuccess; }
 
-        protected readonly TError _error;
+        public bool IsFailure { get => !IsSuccess; }
 
-        protected readonly TResult _result;
 
-        public TResult GetSuccess() =>
-            IsSuccess ? _result :
-            throw new InvalidOperationException("Result is Error!");
+        internal T Value { get; }
 
-        public TError GetError() =>
-            IsError ? _error :
-            throw new InvalidOperationException("Result is Success!");
+
+        internal Exception Error { get; }
+
+
+        /// <summary>
+        /// Performing function depending on Union value.
+        /// </summary>
+        /// <param name="ifSuccess">Function executed when value is Success.</param>
+        /// <param name="ifError">Function executed when value is Failure.</param>
+        public R Match<R>(Func<T, R> ifSuccess, Func<Exception, R> ifError) =>
+            IsSuccess ? ifSuccess(Value) :
+            ifError(Error);
+
+
+        #region Enumerable support
+
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            if (IsSuccess) yield return Value;
+            yield break;
+        }
+
+
+        IEnumerator IEnumerable.GetEnumerator() =>
+            GetEnumerator();
+
+
+        #endregion
+
+
+        #region Operators, Equality and Comparison
+
+
+        public override bool Equals(object obj) =>
+            Equals(obj as Result<T>);
+
+
+        public bool Equals(Result<T> other) =>
+            ((IsFailure && other.IsFailure) && (Error.Equals(other.Error))) ||
+            ((IsSuccess && other.IsSuccess) && (Value.Equals(other.Value)));
+
+
+        public override int GetHashCode() =>
+            IsSuccess ? Value.GetHashCode() :
+            Error.GetHashCode();
+
+
+        public static bool operator ==(Result<T> @this, Result<T> other) =>
+            @this.Equals(other);
+
+
+        public static bool operator !=(Result<T> @this, Result<T> other) =>
+            !(@this == other);
+
+
+        public static implicit operator Result<T>(Exception ex) =>
+            new Result<T>(false, default(T), ex);
+
+
+        #endregion
+
     }
 }

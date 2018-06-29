@@ -2,9 +2,11 @@ namespace FunExt.Lib
 {
     public static partial class F
     {
-        public static Common.Unit Unit
+
+        public static DataTypes.Unit Unit
         {
-            get => Common.Unit.Default;
+            get => DataTypes.Unit.Default;
         }
+
     }
 }

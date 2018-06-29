@@ -19,6 +19,7 @@ namespace FunExt.Tests
             (unit1 != unit2).Should().BeFalse();
         }
 
+
         [Fact]
         void BeComparable()
         {
@@ -27,6 +28,7 @@ namespace FunExt.Tests
 
             (unit1.CompareTo(unit2)).Should().Be(0);
         }
+
 
         [Fact]
         void HaveExactHashCode()
@@ -37,5 +39,6 @@ namespace FunExt.Tests
             (unit1.GetHashCode() == unit2.GetHashCode())
                 .Should().BeTrue();
         }
+
     }
 }
