@@ -18,5 +18,9 @@ namespace ConsoleTest
             !string.IsNullOrEmpty(path) ? Some("text") :
             None;
 
+        static void UsingUnit()
+        {
+        }
+
     }
 }

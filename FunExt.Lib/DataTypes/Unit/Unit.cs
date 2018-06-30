@@ -1,6 +1,6 @@
 using System;
 
-namespace FunExt.Lib.DataTypes
+namespace FunExt.Lib
 {
 
 /// <summary>

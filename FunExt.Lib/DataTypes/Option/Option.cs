@@ -2,8 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-using FunExt.Lib.DataTypes;
-
 namespace FunExt.Lib
 {
     /// <summary>

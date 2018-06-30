@@ -3,9 +3,9 @@ namespace FunExt.Lib
     public static partial class F
     {
 
-        public static DataTypes.Unit Unit
+        public static Unit UnitValue
         {
-            get => DataTypes.Unit.Default;
+            get => Unit.Default;
         }
 
     }

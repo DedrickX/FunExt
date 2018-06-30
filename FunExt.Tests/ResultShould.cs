@@ -13,7 +13,7 @@ namespace FunExt.Tests
     {
 
         [Fact]
-        public void BeUsedWithSuccessType()
+        public void BeUsedWithSuccess()
         {
             Result<int> successResult = Success(10);
 
@@ -27,7 +27,36 @@ namespace FunExt.Tests
 
 
         [Fact]
-        public void BeUsedWithErrorType()
+        public void BeUsedWithFailureAsException()
+        {
+            var err1 = new Exception("hello");
+            Result<int> errorResult = Failure(err1);
+
+            errorResult.IsSuccess.Should().BeFalse();
+            errorResult.IsFailure.Should().BeTrue();
+
+            errorResult.Match(
+                ifSuccess: x => throw new Exception(),
+                ifError: ex => ex.Should().BeSameAs(err1));
+        }
+
+
+        [Fact]
+        public void BeUsedWithFailureAsDescription()
+        {
+            Result<int> errorResult = Failure("This is really bad!");
+
+            errorResult.IsSuccess.Should().BeFalse();
+            errorResult.IsFailure.Should().BeTrue();
+
+            errorResult.Match(
+                ifSuccess: x => throw new Exception(),
+                ifError: ex => ex.Message.Should().BeEquivalentTo("This is really bad!"));
+        }
+
+
+        [Fact]
+        public void BeUsedWithExceptionType()
         {
             var err = new Exception("hello");
             Result<int> errorResult = err;
@@ -106,9 +135,14 @@ namespace FunExt.Tests
         public void BeUsedWithConditionalExpression()
         {
             var path = @"C:\";
-            Result<string> x = !string.IsNullOrEmpty(path) ? Success("text")
+
+            Result<string> r1 = !string.IsNullOrEmpty(path) ? Success("text")
                 : new Exception("Invalid path!");
-            x.IsSuccess.Should().BeTrue();
+            r1.IsSuccess.Should().BeTrue();
+
+            Result<string> r2 = !string.IsNullOrEmpty(path) ? Success("text")
+                : Failure("Oops, that is bad!");
+            r2.IsSuccess.Should().BeTrue();
         }
 
 

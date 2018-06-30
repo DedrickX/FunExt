@@ -83,6 +83,5 @@ namespace FunExt.Lib
         public static implicit operator Result<T>(Exception ex) =>
             new Result<T>(false, default(T), ex);
 
-
     }
 }
