@@ -1,10 +1,11 @@
 using System;
+using System.Linq;
+using System.Collections.Generic;
 using Xunit;
 using FluentAssertions;
 
 using FunExt.Lib;
-using System.Linq;
-using System.Collections.Generic;
+using static FunExt.Lib.F;
 
 namespace FunExt.Tests
 {
@@ -14,7 +15,7 @@ namespace FunExt.Tests
         [Fact]
         public void BeUsedWithSuccessType()
         {
-            Result<int> successResult = F.Success(10);
+            Result<int> successResult = Success(10);
 
             successResult.IsSuccess.Should().BeTrue();
             successResult.IsFailure.Should().BeFalse();
@@ -43,7 +44,7 @@ namespace FunExt.Tests
         [Fact]
         public void BeEnumerableWhenSuccess()
         {
-            Result<int> successResult = F.Success(10);
+            Result<int> successResult = Success(10);
             (from val in successResult select val).First().Should().Be(10);
             (from val in successResult select val).Count().Should().Be(1);
         }
@@ -60,13 +61,13 @@ namespace FunExt.Tests
         [Fact]
         public void BeEquatableWhenContainsSuccessValue()
         {
-            Result<int> successResult1 = F.Success(10);
-            Result<int> successResult2 = F.Success(10);
+            Result<int> successResult1 = Success(10);
+            Result<int> successResult2 = Success(10);
 
             (successResult1.Equals(successResult2)).Should().BeTrue();
             (successResult1 == successResult2).Should().BeTrue();
 
-            Result<int> successResult3 = F.Success(20);
+            Result<int> successResult3 = Success(20);
             (successResult1 != successResult3).Should().BeTrue();
         }
 
@@ -74,13 +75,13 @@ namespace FunExt.Tests
         public void BeEquatableWhenContainsSuccessObject()
         {
             var obj = new List<string>();
-            Result<List<string>> successResult1 = F.Success(obj);
-            Result<List<string>> successResult2 = F.Success(obj);
+            Result<List<string>> successResult1 = Success(obj);
+            Result<List<string>> successResult2 = Success(obj);
 
             (successResult1.Equals(successResult2)).Should().BeTrue();
             (successResult1 == successResult2).Should().BeTrue();
 
-            Result<List<string>> successResult3 = F.Success(new List<string>());
+            Result<List<string>> successResult3 = Success(new List<string>());
             (successResult1 != successResult3).Should().BeTrue();
         }
 
@@ -105,9 +106,28 @@ namespace FunExt.Tests
         public void BeUsedWithConditionalExpression()
         {
             var path = @"C:\";
-            Result<string> x = !string.IsNullOrEmpty(path) ? F.Success("text")
+            Result<string> x = !string.IsNullOrEmpty(path) ? Success("text")
                 : new Exception("Invalid path!");
             x.IsSuccess.Should().BeTrue();
+        }
+
+
+        [Fact]
+        public void WorkWithHashSets()
+        {
+            Result<int> i1 = Success(1);
+            Result<int> i2 = Success(2);
+            Result<int> i3 = Success(1);
+
+            var hs = new HashSet<Result<int>>();
+            hs.Add(i1).Should().BeTrue();
+            hs.Add(i2).Should().BeTrue();
+
+            hs.Contains(Success(1)).Should().BeTrue();
+            hs.Contains(Success(2)).Should().BeTrue();
+            hs.Contains(Success(3)).Should().BeFalse();
+
+            hs.Add(i3).Should().BeFalse();
         }
 
     }

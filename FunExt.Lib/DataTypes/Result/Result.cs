@@ -47,9 +47,6 @@ namespace FunExt.Lib
             ifError(Error);
 
 
-        #region Enumerable support
-
-
         public IEnumerator<T> GetEnumerator()
         {
             if (IsSuccess) yield return Value;
@@ -59,12 +56,6 @@ namespace FunExt.Lib
 
         IEnumerator IEnumerable.GetEnumerator() =>
             GetEnumerator();
-
-
-        #endregion
-
-
-        #region Operators, Equality and Comparison
 
 
         public override bool Equals(object obj) =>
@@ -92,8 +83,6 @@ namespace FunExt.Lib
         public static implicit operator Result<T>(Exception ex) =>
             new Result<T>(false, default(T), ex);
 
-
-        #endregion
 
     }
 }

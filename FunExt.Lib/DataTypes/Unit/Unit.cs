@@ -18,9 +18,6 @@ public struct Unit : IEquatable<Unit>, IComparable<Unit>
         public override string ToString() => "()";
 
 
-        #region Operators, Equality and Comparison
-
-
         public override int GetHashCode() => 0;
 
 
@@ -55,9 +52,6 @@ public struct Unit : IEquatable<Unit>, IComparable<Unit>
 
         public static bool operator <=(Unit left, Unit right) =>
             true;
-
-
-        #endregion
 
     }
 }

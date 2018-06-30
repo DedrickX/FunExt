@@ -51,9 +51,6 @@ namespace FunExt.Lib
             ifNone();
 
 
-        #region Enumerable support
-
-
         public IEnumerator<T> GetEnumerator()
         {
             if (IsSome) yield return Value;
@@ -63,12 +60,6 @@ namespace FunExt.Lib
 
         IEnumerator IEnumerable.GetEnumerator() =>
             GetEnumerator();
-
-
-        #endregion
-
-
-        #region Operators, Equality and Comparison
 
 
         public override bool Equals(object obj) =>
@@ -95,9 +86,6 @@ namespace FunExt.Lib
 
         public static implicit operator Option<T>(OptionNone _) =>
             new Option<T>(false, default(T));
-
-
-        #endregion
 
     }
 }
