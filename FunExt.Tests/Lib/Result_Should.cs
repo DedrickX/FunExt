@@ -7,9 +7,9 @@ using FluentAssertions;
 using FunExt.Lib;
 using static FunExt.Lib.F;
 
-namespace FunExt.Tests
+namespace FunExt.Tests.Lib
 {
-    public class ResultShould
+    public class Result_Should
     {
 
         [Fact]
