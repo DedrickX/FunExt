@@ -36,6 +36,7 @@ namespace FunExt.Tests.Lib
             // "Cannot assign lambda expression to an implicitly-typed variable"
 
             // So this is (bit ugly) solution:
+
             var f0 = Fun(() => 1);
             var f1 = Fun((int x1) => x1);
             var f2 = Fun((int x1, int x2) => x1 + x2);
