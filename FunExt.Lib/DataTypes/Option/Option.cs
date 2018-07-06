@@ -47,9 +47,9 @@ namespace FunExt.Lib
         /// </summary>
         /// <param name="ifSome">Function executed when value is <see cref="Common.Some{T}"/></param>
         /// <param name="ifNone">Function executed when value is <see cref="Common.Option_None"/></param>
-        public R Match<R>(Func<T, R> ifSome, Func<R> ifNone) =>
-            Cata(ifRight: x => ifSome(x),
-                 ifLeft: _ => ifNone());
+        public R Match<R>(Func<T, R> ifSome, Func<OptionNone, R> ifNone) =>
+            IsSome ? ifSome(Value) :
+            ifNone(F.None);
 
 
         /// <summary>
@@ -66,18 +66,12 @@ namespace FunExt.Lib
             (Option<R>) MonadicOperations.Bind(this, f);
 
 
-        // ---------- IMonadicLR ----------
+        public IMonadicLR<OptionNone, B> Return<B>(B rightValue) =>
+            new Option<B>(true, rightValue);
 
 
-        public R Cata<R>(Func<T, R> ifRight, Func<OptionNone, R> ifLeft) =>
-            IsSome? ifRight(Value) :
-            ifLeft(F.None);
-
-        public IMonadicLR<OptionNone, B> Lift<B>(B rightValue) =>
-            F.Some(rightValue);
-
-        public IMonadicLR<OptionNone, B> GetLeftValue<B>(OptionNone leftValue) =>
-            (Option<B>) F.None ;
+        public IMonadicLR<OptionNone, B> ReturnLeft<B>(OptionNone leftValue) =>
+            new Option<B>(false, default(B));
 
 
         // ---------- Enumerables ----------

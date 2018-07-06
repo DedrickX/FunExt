@@ -46,8 +46,8 @@ namespace FunExt.Lib
         /// <param name="ifSuccess">Function executed when value is Success.</param>
         /// <param name="ifFailure">Function executed when value is Failure.</param>
         public R Match<R>(Func<T, R> ifSuccess, Func<Exception, R> ifFailure) =>
-            Cata(ifRight: x => ifSuccess(x),
-                 ifLeft: x => ifFailure(x));
+            IsSuccess ? ifSuccess(Value) :
+            ifFailure(Error);
 
 
         /// <summary>
@@ -64,18 +64,12 @@ namespace FunExt.Lib
             (Result<R>)MonadicOperations.Bind(this, f);
 
 
-        // ---------- IMonadicLR ----------
+        public IMonadicLR<Exception, B> Return<B>(B rightValue) =>
+            new Result<B>(true, rightValue, null);
 
 
-        public R Cata<R>(Func<T, R> ifRight, Func<Exception, R> ifLeft) =>
-            IsSuccess ? ifRight(Value) :
-            ifLeft(Error);
-
-        public IMonadicLR<Exception, B> Lift<B>(B rightValue) =>
-            F.Success(rightValue);
-
-        public IMonadicLR<Exception, B> GetLeftValue<B>(Exception leftValue) =>
-            (Result<B>)F.Failure(leftValue);
+        public IMonadicLR<Exception, B> ReturnLeft<B>(Exception leftValue) =>
+            new Result<B>(false, default(B), leftValue);
 
 
         // ---------- Enumerables ----------

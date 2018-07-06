@@ -21,7 +21,7 @@ namespace FunExt.Tests.Lib
             someOption.IsNone.Should().BeFalse();
             someOption.Match(
                 ifSome: x => x.Should().Be(10),
-                ifNone: () => throw new Exception("Value is none!?")
+                ifNone: _ => throw new Exception("Value is none!?")
             );
         }
 
@@ -43,7 +43,7 @@ namespace FunExt.Tests.Lib
 
             var result = someOption.Match(
                 ifSome: x => x,
-                ifNone: () => throw new Exception("Value is none!?")
+                ifNone: _ => throw new Exception("Value is none!?")
             );
             result.Should().Be(10);
         }
@@ -56,7 +56,7 @@ namespace FunExt.Tests.Lib
 
             var result = noneOption.Match(
                 ifSome: x => throw new Exception("Value is Some!?"),
-                ifNone: () => "Ok"
+                ifNone: _ => "Ok"
             );
             result.Should().Be("Ok");
         }
@@ -181,7 +181,7 @@ namespace FunExt.Tests.Lib
             result.IsSome.Should().BeTrue();
             var resultValue = result.Match(
                 ifSome: (string x) => x,
-                ifNone: () => throw new Exception("Value is none!?")
+                ifNone: _ => throw new Exception("Value is none!?")
             );
             resultValue.Should().Be("Number 10!");
         }
@@ -213,7 +213,7 @@ namespace FunExt.Tests.Lib
             positiveResult.IsSome.Should().BeTrue();
             var resultValue = positiveResult.Match(
                 ifSome: (string x) => x,
-                ifNone: () => throw new Exception("Value is none!?")
+                ifNone: _ => throw new Exception("Value is none!?")
             );
             resultValue.Should().Be("Number 10 is positive!");
 
