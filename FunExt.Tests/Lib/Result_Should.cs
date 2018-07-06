@@ -168,7 +168,7 @@ namespace FunExt.Tests.Lib
         [Fact]
         public void MapWhenSuccess()
         {
-            Func<int, string> f = x =>
+            string f(int x) =>
                 $"Number {x}!";
 
             Result<int> successValue = Success(10);
@@ -185,7 +185,7 @@ namespace FunExt.Tests.Lib
         [Fact]
         public void MapWhenFailure()
         {
-            Func<int, string> f = x =>
+            string f(int x) =>
                 $"Number {x}!";
 
             var ex = new Exception("Hello");
@@ -206,7 +206,7 @@ namespace FunExt.Tests.Lib
         {
             var ex = new Exception("Value is negative!");
 
-            Func<int, Result<string>> f = x =>
+            Result<string> f(int x) =>
                 x >= 0 ? Success($"Number {x} is positive!") : Failure(ex);
 
             // positive value
@@ -236,7 +236,7 @@ namespace FunExt.Tests.Lib
         {
             var funcEx = new Exception("Value is negative!");
 
-            Func<int, Result<string>> f = x =>
+            Result<string> f(int x) =>
                 x >= 0 ? Success($"Number {x} is positive!") : Failure(funcEx);
 
             var initialEx = new Exception("Initial value is Failure!");

@@ -172,7 +172,7 @@ namespace FunExt.Tests.Lib
         [Fact]
         public void MapWhenSome()
         {
-            Func<int, string> f = x => 
+            string f(int x) =>
                 $"Number {x}!";
 
             Option<int> someValue = Some(10);
@@ -190,7 +190,7 @@ namespace FunExt.Tests.Lib
         [Fact]
         public void MapWhenNone()
         {
-            Func<int, string> f = x => 
+            string f(int x) =>
                 $"Number {x}!";
 
             Option<int> noneValue = None;
@@ -203,7 +203,7 @@ namespace FunExt.Tests.Lib
         [Fact]
         public void BindWhenSome()
         {
-            Func<int, Option<string>> f = x => 
+            Option<string> f(int x) =>
                 x >= 0 ? Some($"Number {x} is positive!") : None;
 
             // positive value
@@ -228,13 +228,13 @@ namespace FunExt.Tests.Lib
         [Fact]
         public void BindWhenNone()
         {
-            Func<int, Option<string>> f = x =>
+            Option<string> f(int x) =>
                 x >= 0 ? Some($"Number {x} is positive!") : None;
 
             // positive value
             Option<int> noneValue = None;
             var result = noneValue.Bind(f);
-                        
+
             result.IsSome.Should().BeFalse();
         }
 
