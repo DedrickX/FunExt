@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+using FunExt.Lib.DataTypes;
+
 namespace FunExt.Lib
 {
     /// <summary>
@@ -12,9 +14,10 @@ namespace FunExt.Lib
     ///    - Some of T
     ///    - None
     /// </remarks>
-    public sealed partial class Option<T> :
+    public partial class Option<T> :
         IEquatable<Option<T>>,
-        IEnumerable<T>
+        IEnumerable<T>,
+        IMonadicLR<OptionNone, T>
     {
 
         internal Option(bool isSome, T value)
@@ -45,8 +48,39 @@ namespace FunExt.Lib
         /// <param name="ifSome">Function executed when value is <see cref="Common.Some{T}"/></param>
         /// <param name="ifNone">Function executed when value is <see cref="Common.Option_None"/></param>
         public R Match<R>(Func<T, R> ifSome, Func<R> ifNone) =>
-            IsSome ? ifSome(Value) :
-            ifNone();
+            Cata(ifRight: x => ifSome(x),
+                 ifLeft: _ => ifNone());
+
+
+        /// <summary>
+        /// Applying function into inner value of Option. If Option is None, nothing happens.
+        /// Functor map.
+        public Option<R> Map<R>(Func<T, R> f) =>
+            (Option<R>) MonadicOperations.Map(this, f);
+
+
+        /// <summary>
+        /// Applying function into inner value of Option. If Option is None, nothing happens.
+        /// Monadic bind.
+        public Option<R> Bind<R>(Func<T, Option<R>> f) =>
+            (Option<R>) MonadicOperations.Bind(this, f);
+
+
+        // ---------- IMonadicLR ----------
+
+
+        public R Cata<R>(Func<T, R> ifRight, Func<OptionNone, R> ifLeft) =>
+            IsSome? ifRight(Value) :
+            ifLeft(F.None);
+
+        public IMonadicLR<OptionNone, B> Lift<B>(B rightValue) =>
+            F.Some(rightValue);
+
+        public IMonadicLR<OptionNone, B> GetLeftValue<B>(OptionNone leftValue) =>
+            (Option<B>) F.None ;
+
+
+        // ---------- Enumerables ----------
 
 
         public IEnumerator<T> GetEnumerator()
@@ -58,6 +92,9 @@ namespace FunExt.Lib
 
         IEnumerator IEnumerable.GetEnumerator() =>
             GetEnumerator();
+
+
+        // ---------- Equality and operators ----------
 
 
         public override bool Equals(object obj) =>

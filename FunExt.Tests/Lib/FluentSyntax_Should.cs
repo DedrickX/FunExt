@@ -19,7 +19,7 @@ namespace FunExt.Tests.Lib
             test.IsDisposed.Should().BeFalse();
 
             var result = test
-                .PipeAndDispose(x => x.Value + 10);
+                .PipeUsing(x => x.Value + 10);
 
             result.Should().Be(110);
             test.IsDisposed.Should().BeTrue();

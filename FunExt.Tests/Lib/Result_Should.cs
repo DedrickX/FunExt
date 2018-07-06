@@ -22,7 +22,7 @@ namespace FunExt.Tests.Lib
 
             successResult.Match(
                 ifSuccess: x => x.Should().Be(10),
-                ifError: ex => throw new Exception());
+                ifFailure: ex => throw new Exception());
         }
 
 
@@ -37,7 +37,7 @@ namespace FunExt.Tests.Lib
 
             errorResult.Match(
                 ifSuccess: x => throw new Exception(),
-                ifError: ex => ex.Should().BeSameAs(err1));
+                ifFailure: ex => ex.Should().BeSameAs(err1));
         }
 
 
@@ -51,7 +51,7 @@ namespace FunExt.Tests.Lib
 
             errorResult.Match(
                 ifSuccess: x => throw new Exception(),
-                ifError: ex => ex.Message.Should().BeEquivalentTo("This is really bad!"));
+                ifFailure: ex => ex.Message.Should().BeEquivalentTo("This is really bad!"));
         }
 
 
@@ -66,7 +66,7 @@ namespace FunExt.Tests.Lib
 
             errorResult.Match(
                 ifSuccess: x => throw new Exception(),
-                ifError: ex => ex.Should().BeSameAs(err));
+                ifFailure: ex => ex.Should().BeSameAs(err));
         }
 
 
@@ -162,6 +162,92 @@ namespace FunExt.Tests.Lib
             hs.Contains(Success(3)).Should().BeFalse();
 
             hs.Add(i3).Should().BeFalse();
+        }
+
+
+        [Fact]
+        public void MapWhenSuccess()
+        {
+            Func<int, string> f = x =>
+                $"Number {x}!";
+
+            Result<int> successValue = Success(10);
+            var result = successValue.Map(f);
+
+            result.IsSuccess.Should().BeTrue();
+            result.Match(
+                ifSuccess: (string x) => x,
+                ifFailure: (Exception _) => throw new Exception("Value is none!?"))
+            .Should().Be("Number 10!");
+        }
+
+
+        [Fact]
+        public void MapWhenFailure()
+        {
+            Func<int, string> f = x =>
+                $"Number {x}!";
+
+            var ex = new Exception("Hello");
+
+            Result<int> failureValue = ex;
+            var result = failureValue.Map(f);
+
+            result.IsFailure.Should().BeTrue();
+            result.Match(
+                ifSuccess: (string _) => throw new Exception(),
+                ifFailure: (Exception x) => x)
+                .Should().BeSameAs(ex);
+        }
+
+
+        [Fact]
+        public void BindWhenSuccess()
+        {
+            var ex = new Exception("Value is negative!");
+
+            Func<int, Result<string>> f = x =>
+                x >= 0 ? Success($"Number {x} is positive!") : Failure(ex);
+
+            // positive value
+            Result<int> successPositiveValue = Success(10);
+            var positiveResult = successPositiveValue.Bind(f);
+
+            positiveResult.IsSuccess.Should().BeTrue();
+            positiveResult.Match(
+                ifSuccess: (string x) => x,
+                ifFailure: (Exception _) => throw new Exception())
+                .Should().Be("Number 10 is positive!");
+
+            // negative value
+            Result<int> successNegativeValue = Success(-10);
+            var negativeResult = successNegativeValue.Bind(f);
+
+            negativeResult.IsSuccess.Should().BeFalse();
+            negativeResult.Match(
+                ifSuccess: (string _) => throw new Exception(),
+                ifFailure: (Exception x) => x)
+                .Should().BeSameAs(ex);
+        }
+
+
+        [Fact]
+        public void BindWhenFailure()
+        {
+            var funcEx = new Exception("Value is negative!");
+
+            Func<int, Result<string>> f = x =>
+                x >= 0 ? Success($"Number {x} is positive!") : Failure(funcEx);
+
+            var initialEx = new Exception("Initial value is Failure!");
+            Result<int> failureValue = Failure(initialEx);
+            var result = failureValue.Bind(f);
+
+            result.IsSuccess.Should().BeFalse();
+            result.Match(
+                ifSuccess: (string _) => throw new Exception(),
+                ifFailure: (Exception x) => x)
+                .Should().BeSameAs(initialEx);
         }
 
     }

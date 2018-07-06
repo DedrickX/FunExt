@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+using FunExt.Lib.DataTypes;
+
 namespace FunExt.Lib
 {
     /// <summary>
@@ -14,7 +16,8 @@ namespace FunExt.Lib
     /// </remarks>
     public partial class Result<T> :
         IEnumerable<T>,
-        IEquatable<Result<T>>
+        IEquatable<Result<T>>,
+        IMonadicLR<Exception, T>
     {
 
         internal Result(bool isSuccess, T value, Exception ex)
@@ -41,10 +44,41 @@ namespace FunExt.Lib
         /// Performing function depending on Union value.
         /// </summary>
         /// <param name="ifSuccess">Function executed when value is Success.</param>
-        /// <param name="ifError">Function executed when value is Failure.</param>
-        public R Match<R>(Func<T, R> ifSuccess, Func<Exception, R> ifError) =>
-            IsSuccess ? ifSuccess(Value) :
-            ifError(Error);
+        /// <param name="ifFailure">Function executed when value is Failure.</param>
+        public R Match<R>(Func<T, R> ifSuccess, Func<Exception, R> ifFailure) =>
+            Cata(ifRight: x => ifSuccess(x),
+                 ifLeft: x => ifFailure(x));
+
+
+        /// <summary>
+        /// Applying function into inner value of Option. If Option is None, nothing happens.
+        /// Functor map.
+        public Result<R> Map<R>(Func<T, R> f) =>
+            (Result<R>)MonadicOperations.Map(this, f);
+
+
+        /// <summary>
+        /// Applying function into inner value of Option. If Option is None, nothing happens.
+        /// Monadic bind.
+        public Result<R> Bind<R>(Func<T, Result<R>> f) =>
+            (Result<R>)MonadicOperations.Bind(this, f);
+
+
+        // ---------- IMonadicLR ----------
+
+
+        public R Cata<R>(Func<T, R> ifRight, Func<Exception, R> ifLeft) =>
+            IsSuccess ? ifRight(Value) :
+            ifLeft(Error);
+
+        public IMonadicLR<Exception, B> Lift<B>(B rightValue) =>
+            F.Success(rightValue);
+
+        public IMonadicLR<Exception, B> GetLeftValue<B>(Exception leftValue) =>
+            (Result<B>)F.Failure(leftValue);
+
+
+        // ---------- Enumerables ----------
 
 
         public IEnumerator<T> GetEnumerator()
@@ -56,6 +90,9 @@ namespace FunExt.Lib
 
         IEnumerator IEnumerable.GetEnumerator() =>
             GetEnumerator();
+
+
+        // ---------- Equality and operators ----------
 
 
         public override bool Equals(object obj) =>

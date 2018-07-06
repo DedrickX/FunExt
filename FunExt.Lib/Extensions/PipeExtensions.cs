@@ -13,13 +13,12 @@ namespace FunExt.Lib
             f(x);
 
         /// <summary>
-        /// Extension for concise work with IDisposable types.
-        /// Instance is disposed after function call.
+        /// Pipe IDisposable value into function. Then the value is disposed.
         /// </summary>
         /// <param name="disposable">Disposable instance to work with.</param>
         /// <param name="f">Function applied on IDisposable instance.</param>
         /// <returns></returns>
-        public static R PipeAndDispose<TDisp, R>(this TDisp disposable, Func<TDisp, R> f)
+        public static R PipeUsing<TDisp, R>(this TDisp disposable, Func<TDisp, R> f)
             where TDisp: IDisposable
         {
             using (disposable) return f(disposable);

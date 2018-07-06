@@ -21,7 +21,7 @@ namespace FunExt.Tests.Lib
             someOption.IsNone.Should().BeFalse();
             someOption.Match(
                 ifSome: x => x.Should().Be(10),
-                ifNone: () => throw new Exception("Invalid value!")
+                ifNone: () => throw new Exception("Value is none!?")
             );
         }
 
@@ -43,7 +43,7 @@ namespace FunExt.Tests.Lib
 
             var result = someOption.Match(
                 ifSome: x => x,
-                ifNone: () => throw new Exception("Value is none!")
+                ifNone: () => throw new Exception("Value is none!?")
             );
             result.Should().Be(10);
         }
@@ -55,7 +55,7 @@ namespace FunExt.Tests.Lib
             Option<int> noneOption = None;
 
             var result = noneOption.Match(
-                ifSome: x => throw new Exception("Value is Some!"),
+                ifSome: x => throw new Exception("Value is Some!?"),
                 ifNone: () => "Ok"
             );
             result.Should().Be("Ok");
@@ -166,6 +166,76 @@ namespace FunExt.Tests.Lib
             hs.Contains(Some(3)).Should().BeFalse();
 
             hs.Add(i3).Should().BeFalse();
+        }
+
+
+        [Fact]
+        public void MapWhenSome()
+        {
+            Func<int, string> f = x => 
+                $"Number {x}!";
+
+            Option<int> someValue = Some(10);
+            var result = someValue.Map(f);
+
+            result.IsSome.Should().BeTrue();
+            var resultValue = result.Match(
+                ifSome: (string x) => x,
+                ifNone: () => throw new Exception("Value is none!?")
+            );
+            resultValue.Should().Be("Number 10!");
+        }
+
+
+        [Fact]
+        public void MapWhenNone()
+        {
+            Func<int, string> f = x => 
+                $"Number {x}!";
+
+            Option<int> noneValue = None;
+            var result = noneValue.Map(f);
+
+            result.IsNone.Should().BeTrue();
+        }
+
+
+        [Fact]
+        public void BindWhenSome()
+        {
+            Func<int, Option<string>> f = x => 
+                x >= 0 ? Some($"Number {x} is positive!") : None;
+
+            // positive value
+            Option<int> somePositiveValue = Some(10);
+            var positiveResult = somePositiveValue.Bind(f);
+
+            positiveResult.IsSome.Should().BeTrue();
+            var resultValue = positiveResult.Match(
+                ifSome: (string x) => x,
+                ifNone: () => throw new Exception("Value is none!?")
+            );
+            resultValue.Should().Be("Number 10 is positive!");
+
+            // negative value
+            Option<int> someNegativeValue = Some(-10);
+            var negativeResult = someNegativeValue.Bind(f);
+
+            negativeResult.IsSome.Should().BeFalse();
+        }
+
+
+        [Fact]
+        public void BindWhenNone()
+        {
+            Func<int, Option<string>> f = x =>
+                x >= 0 ? Some($"Number {x} is positive!") : None;
+
+            // positive value
+            Option<int> noneValue = None;
+            var result = noneValue.Bind(f);
+                        
+            result.IsSome.Should().BeFalse();
         }
 
     }
