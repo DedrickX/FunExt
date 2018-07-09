@@ -3,7 +3,7 @@
 
 namespace FunExt.Lib.DataTypes
 {
-    public interface IMonadicLR<TLeft, A>
+    public interface IMonadicLR<TLeft, A> // is this really necessary? :)
     {
         B Match<B>(Func<A, B> ifRight, Func<TLeft, B> ifLeft);
 
