@@ -169,74 +169,74 @@ namespace FunExt.Tests.Lib
         }
 
 
-        [Fact]
-        public void MapWhenSome()
-        {
-            string f(int x) =>
-                $"Number {x}!";
+        //[Fact]
+        //public void MapWhenSome()
+        //{
+        //    string f(int x) =>
+        //        $"Number {x}!";
 
-            Option<int> someValue = Some(10);
-            var result = someValue.Map(f);
+        //    Option<int> someValue = Some(10);
+        //    var result = someValue.Map(f);
 
-            result.IsSome.Should().BeTrue();
-            var resultValue = result.Match(
-                ifSome: (string x) => x,
-                ifNone: _ => throw new Exception("Value is none!?")
-            );
-            resultValue.Should().Be("Number 10!");
-        }
-
-
-        [Fact]
-        public void MapWhenNone()
-        {
-            string f(int x) =>
-                $"Number {x}!";
-
-            Option<int> noneValue = None;
-            var result = noneValue.Map(f);
-
-            result.IsNone.Should().BeTrue();
-        }
+        //    result.IsSome.Should().BeTrue();
+        //    var resultValue = result.Match(
+        //        ifSome: (string x) => x,
+        //        ifNone: _ => throw new Exception("Value is none!?")
+        //    );
+        //    resultValue.Should().Be("Number 10!");
+        //}
 
 
-        [Fact]
-        public void BindWhenSome()
-        {
-            Option<string> f(int x) =>
-                x >= 0 ? Some($"Number {x} is positive!") : None;
+        //[Fact]
+        //public void MapWhenNone()
+        //{
+        //    string f(int x) =>
+        //        $"Number {x}!";
 
-            // positive value
-            Option<int> somePositiveValue = Some(10);
-            var positiveResult = somePositiveValue.Bind(f);
+        //    Option<int> noneValue = None;
+        //    var result = noneValue.Map(f);
 
-            positiveResult.IsSome.Should().BeTrue();
-            var resultValue = positiveResult.Match(
-                ifSome: (string x) => x,
-                ifNone: _ => throw new Exception("Value is none!?")
-            );
-            resultValue.Should().Be("Number 10 is positive!");
-
-            // negative value
-            Option<int> someNegativeValue = Some(-10);
-            var negativeResult = someNegativeValue.Bind(f);
-
-            negativeResult.IsSome.Should().BeFalse();
-        }
+        //    result.IsNone.Should().BeTrue();
+        //}
 
 
-        [Fact]
-        public void BindWhenNone()
-        {
-            Option<string> f(int x) =>
-                x >= 0 ? Some($"Number {x} is positive!") : None;
+        //[Fact]
+        //public void BindWhenSome()
+        //{
+        //    Option<string> f(int x) =>
+        //        x >= 0 ? Some($"Number {x} is positive!") : None;
 
-            // positive value
-            Option<int> noneValue = None;
-            var result = noneValue.Bind(f);
+        //    // positive value
+        //    Option<int> somePositiveValue = Some(10);
+        //    var positiveResult = somePositiveValue.Bind(f);
 
-            result.IsSome.Should().BeFalse();
-        }
+        //    positiveResult.IsSome.Should().BeTrue();
+        //    var resultValue = positiveResult.Match(
+        //        ifSome: (string x) => x,
+        //        ifNone: _ => throw new Exception("Value is none!?")
+        //    );
+        //    resultValue.Should().Be("Number 10 is positive!");
+
+        //    // negative value
+        //    Option<int> someNegativeValue = Some(-10);
+        //    var negativeResult = someNegativeValue.Bind(f);
+
+        //    negativeResult.IsSome.Should().BeFalse();
+        //}
+
+
+        //[Fact]
+        //public void BindWhenNone()
+        //{
+        //    Option<string> f(int x) =>
+        //        x >= 0 ? Some($"Number {x} is positive!") : None;
+
+        //    // positive value
+        //    Option<int> noneValue = None;
+        //    var result = noneValue.Bind(f);
+
+        //    result.IsSome.Should().BeFalse();
+        //}
 
     }
 }

@@ -1,3 +1,5 @@
+using System;
+
 namespace FunExt.Lib
 {
     public static partial class F
@@ -7,7 +9,15 @@ namespace FunExt.Lib
         /// Some value for use with <see cref="Option{T}"/>.
         /// </summary>
         public static Option<T> Some<T>(T value) =>
-            new Option<T>(true, value);
+            typeof(T).IsValueType ? new Option<T>(true, value) :
+            value != null ? new Option<T>(true, value) :
+            throw new ArgumentNullException();
+
+
+        public static Option<T> SomeOrNone<T>(T value) =>
+            typeof(T).IsValueType ? new Option<T>(true, value) :
+            value != null ? new Option<T>(true, value) :
+            None;
 
 
         /// <summary>

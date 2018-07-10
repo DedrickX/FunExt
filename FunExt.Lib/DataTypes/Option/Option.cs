@@ -6,6 +6,7 @@ using FunExt.Lib.DataTypes;
 
 namespace FunExt.Lib
 {
+
     /// <summary>
     /// Union Type representing possible value of T
     /// </summary>
@@ -14,10 +15,8 @@ namespace FunExt.Lib
     ///    - Some of T
     ///    - None
     /// </remarks>
-    public partial class Option<T> :
-        IEquatable<Option<T>>,
-        IEnumerable<T>,
-        IMonadicLR<OptionNone, T>
+    public struct Option<T> :
+        IEnumerable<T>
     {
 
         internal Option(bool isSome, T value)
@@ -52,28 +51,6 @@ namespace FunExt.Lib
             ifNone(F.None);
 
 
-        /// <summary>
-        /// Applying function into inner value of Option. If Option is None, nothing happens.
-        /// Functor map.
-        public Option<R> Map<R>(Func<T, R> f) =>
-            (Option<R>) MonadicOperations.Map(this, f);
-
-
-        /// <summary>
-        /// Applying function into inner value of Option. If Option is None, nothing happens.
-        /// Monadic bind.
-        public Option<R> Bind<R>(Func<T, Option<R>> f) =>
-            (Option<R>) MonadicOperations.Bind(this, f);
-
-
-        public IMonadicLR<OptionNone, B> Return<B>(B rightValue) =>
-            new Option<B>(true, rightValue);
-
-
-        public IMonadicLR<OptionNone, B> ReturnLeft<B>(OptionNone leftValue) =>
-            new Option<B>(false, default(B));
-
-
         // ---------- Enumerables ----------
 
 
@@ -92,7 +69,7 @@ namespace FunExt.Lib
 
 
         public override bool Equals(object obj) =>
-            Equals(obj as Option<T>);
+            Equals((Option<T>) obj);
 
 
         public bool Equals(Option<T> other) =>
@@ -113,8 +90,14 @@ namespace FunExt.Lib
             !(@this == other);
 
 
+        public static implicit operator Option<T>(T value) =>
+            typeof(T).IsValueType ? new Option<T>(true, value) :
+            new Option<T>(value != null, value);
+
+
         public static implicit operator Option<T>(OptionNone _) =>
             new Option<T>(false, default(T));
 
     }
+
 }
