@@ -18,7 +18,6 @@ namespace FunExt.Lib
         IEnumerable<T>,
         IEquatable<Result<T>>
     {
-
         internal Result(bool isSuccess, T value, Exception ex)
         {
             IsSuccess = isSuccess;

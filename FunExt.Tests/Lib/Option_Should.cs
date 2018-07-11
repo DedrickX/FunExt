@@ -14,6 +14,17 @@ namespace FunExt.Tests.Lib
     {
 
         [Fact]
+        public void BeNoneByDefault()
+        {
+            Option<int> i = new Option<int>();
+            i.IsNone.Should().BeTrue();
+
+            Option<Exception> e = new Option<Exception>();
+            e.IsNone.Should().BeTrue();
+        }
+
+
+        [Fact]
         public void BeUsedWithSomeType()
         {
             Option<int> someOption = Some(10);
@@ -53,6 +64,17 @@ namespace FunExt.Tests.Lib
             noneOption.IsNone.Should().BeTrue();
         }
 
+
+        [Fact]
+        public void BeUsedWithSomeIfNotNullHelper()
+        {
+            Option<string> someString = SomeIfNotNull("hello");
+            someString.IsSome.Should().BeTrue();
+
+            Option<string> noneString = SomeIfNotNull<string>(null);
+            noneString.IsNone.Should().BeTrue();
+        }
+        
 
         [Fact]
         public void BeMatchedWhenSome()

@@ -15,10 +15,12 @@ namespace FunExt.Lib
             new Option<T>(true, value);
 
 
-        public static Option<T> SomeOrNone<T>(T value) =>
-            typeof(T).IsValueType ? new Option<T>(true, value) :
-            value != null ? new Option<T>(true, value) :
-            None;
+        /// <summary>
+        /// Creates Some Option if argument is not null, otherwise returns None Option.
+        /// </summary>
+        public static Option<T> SomeIfNotNull<T>(T value) =>
+            (value == null) ? new OptionNone() :
+            new Option<T>(true, value);
 
 
         /// <summary>

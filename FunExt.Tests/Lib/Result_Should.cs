@@ -15,6 +15,17 @@ namespace FunExt.Tests.Lib
     {
 
         [Fact]
+        public void BeFailureByDefault()
+        {
+            Result<int> i = new Result<int>();
+            i.IsFailure.Should().BeTrue();
+
+            Result<List<string>> e = new Result<List<string>>();
+            e.IsFailure.Should().BeTrue();
+        }
+
+        
+        [Fact]
         public void BeUsedWithSuccess()
         {
             Result<int> successResult = Success(10);
@@ -46,6 +57,20 @@ namespace FunExt.Tests.Lib
 
 
         [Fact]
+        public void BeUsedWithResultIfNotNullHelper()
+        {
+            Result<string> someString = SuccessIfNotNull("hello");
+            someString.IsSuccess.Should().BeTrue();
+
+            Result<string> noneString = SuccessIfNotNull<string>(null);
+            noneString.IsFailure.Should().BeTrue();
+            noneString.Match(
+                ifSuccess: x => throw new Exception(),
+                ifFailure: x => x.Should().BeOfType<ArgumentNullException>());
+        }
+
+
+        [Fact]
         public void BeUsedWithFailureAsException()
         {
             var err1 = new Exception("hello");
@@ -58,8 +83,7 @@ namespace FunExt.Tests.Lib
                 ifSuccess: x => throw new Exception(),
                 ifFailure: ex => ex.Should().BeSameAs(err1));
         }
-
-
+                
         [Fact]
         public void BeUsedWithFailureAsDescription()
         {
@@ -119,6 +143,7 @@ namespace FunExt.Tests.Lib
             (successResult1 != successResult3).Should().BeTrue();
         }
 
+
         [Fact]
         public void BeEquatableWhenContainsSuccessObject()
         {
@@ -132,6 +157,7 @@ namespace FunExt.Tests.Lib
             Result<List<string>> successResult3 = Success(new List<string>());
             (successResult1 != successResult3).Should().BeTrue();
         }
+
 
         [Fact]
         public void BeEquatableWhenContainsFailure()

@@ -16,6 +16,14 @@ namespace FunExt.Lib
 
 
         /// <summary>
+        /// Creates Success Result if argument is not null, otherwise returns Failure Result.
+        /// </summary>
+        public static Result<T> SuccessIfNotNull<T>(T value) =>
+            (value == null) ? new ArgumentNullException() :
+            new Result<T>(true, value, null);
+
+
+        /// <summary>
         /// Failure result for use with <see cref="Result{T}"/>.
         /// </summary>
         public static Exception Failure(Exception ex) =>
