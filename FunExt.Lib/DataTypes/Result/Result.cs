@@ -2,10 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-using FunExt.Lib.DataTypes;
 
 namespace FunExt.Lib
 {
+
     /// <summary>
     /// Union Type representing result of TResult with possible error of TError
     /// </summary>
@@ -14,10 +14,9 @@ namespace FunExt.Lib
     ///    - Success
     ///    - Failure
     /// </remarks>
-    public partial class Result<T> :
+    public struct Result<T> :
         IEnumerable<T>,
-        IEquatable<Result<T>>,
-        IMonadicLR<Exception, T>
+        IEquatable<Result<T>>
     {
 
         internal Result(bool isSuccess, T value, Exception ex)
@@ -50,28 +49,6 @@ namespace FunExt.Lib
             ifFailure(Error);
 
 
-        /// <summary>
-        /// Applying function into inner value of Option. If Option is None, nothing happens.
-        /// Functor map.
-        public Result<R> Map<R>(Func<T, R> f) =>
-            (Result<R>)MonadicOperations.Map(this, f);
-
-
-        /// <summary>
-        /// Applying function into inner value of Option. If Option is None, nothing happens.
-        /// Monadic bind.
-        public Result<R> Bind<R>(Func<T, Result<R>> f) =>
-            (Result<R>)MonadicOperations.Bind(this, f);
-
-
-        public IMonadicLR<Exception, B> Return<B>(B rightValue) =>
-            new Result<B>(true, rightValue, null);
-
-
-        public IMonadicLR<Exception, B> ReturnLeft<B>(Exception leftValue) =>
-            new Result<B>(false, default(B), leftValue);
-
-
         // ---------- Enumerables ----------
 
 
@@ -90,7 +67,7 @@ namespace FunExt.Lib
 
 
         public override bool Equals(object obj) =>
-            Equals(obj as Result<T>);
+            Equals((Result<T>) obj);
 
 
         public bool Equals(Result<T> other) =>

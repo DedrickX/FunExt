@@ -7,6 +7,7 @@ using FluentAssertions;
 using FunExt.Lib;
 using static FunExt.Lib.F;
 
+
 namespace FunExt.Tests.Lib
 {
     public class Option_Should
@@ -26,6 +27,23 @@ namespace FunExt.Tests.Lib
         }
 
 
+        [Fact]
+        public void ThrowExceptionIfSomeIsNull()
+        {           
+            this.Invoking((x) => { Option<int?> s = Some<int?>(null); })
+                .Should()
+                .Throw<ArgumentNullException>();
+
+            this.Invoking((x) => { Option<string> s = Some<string>(null); })
+                .Should()
+                .Throw<ArgumentNullException>();
+
+            this.Invoking((x) => { Option<Exception> s = Some<Exception>(null); })
+                .Should()
+                .Throw<ArgumentNullException>();
+        }
+
+        
         [Fact]
         public void BeUsedWithNoneType()
         {
