@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-namespace FunExt.Lib
+namespace FunExt
 {
     public static class CommonExtensions
     {

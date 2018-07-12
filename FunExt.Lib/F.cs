@@ -1,9 +1,9 @@
 using System;
-using System.Collections.Generic;
 
-using static FunExt.Lib.F;
+using FunExt.DataTypes;
 
-namespace FunExt.Lib
+
+namespace FunExt
 {
 
     public static partial class F

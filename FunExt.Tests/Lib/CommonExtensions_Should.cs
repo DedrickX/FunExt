@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using Xunit;
 using FluentAssertions;
 
-using FunExt.Lib;
-using static FunExt.Lib.F;
+using FunExt;
+using static FunExt.F;
 
 namespace FunExt.Tests.Lib
 {

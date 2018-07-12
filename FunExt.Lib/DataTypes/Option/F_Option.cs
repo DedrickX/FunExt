@@ -1,7 +1,9 @@
 using System;
 
+using FunExt.DataTypes;
 
-namespace FunExt.Lib
+
+namespace FunExt
 {
 
     public static partial class F

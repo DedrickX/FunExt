@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Linq;
-using System.Collections.Generic;
 using Xunit;
 using FluentAssertions;
 
-using FunExt.Lib;
-using static FunExt.Lib.F;
+using static FunExt.F;
+using FunExt.DataTypes;
+
 
 namespace FunExt.Tests.Lib
 {

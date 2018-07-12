@@ -2,10 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-using static FunExt.Lib.F;
+using static FunExt.F;
 
 
-namespace FunExt.Lib
+namespace FunExt
 {
 
     /// <summary>

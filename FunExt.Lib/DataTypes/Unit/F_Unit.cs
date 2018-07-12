@@ -1,4 +1,7 @@
-namespace FunExt.Lib
+using FunExt.DataTypes;
+
+
+namespace FunExt
 {
     public static partial class F
     {

@@ -1,5 +1,5 @@
-using FunExt.Lib;
-using static FunExt.Lib.F;
+using FunExt;
+using static FunExt.F;
 
 namespace ConsoleTest
 {
