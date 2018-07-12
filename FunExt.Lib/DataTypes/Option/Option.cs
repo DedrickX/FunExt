@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+using static FunExt.Lib.F;
+
 
 namespace FunExt.Lib
 {
@@ -46,9 +48,31 @@ namespace FunExt.Lib
         /// </summary>
         /// <param name="ifSome">Function executed when value is <see cref="Common.Some{T}"/></param>
         /// <param name="ifNone">Function executed when value is <see cref="Common.Option_None"/></param>
-        public R Match<R>(Func<T, R> ifSome, Func<OptionNone, R> ifNone) =>
+        public R Match<R>(Func<T, R> ifSome, Func<R> ifNone) =>
             IsSome ? ifSome(Value) :
-            ifNone(F.None);
+            ifNone();
+
+
+        /// <summary>
+        /// Applying inner value to provided function (functor map)
+        /// </summary>
+        public Option<R> Map<R>(Func<T, R> f) =>
+            IsSome ? Some(f(Value)) :
+            None;
+
+
+        /// <summary>
+        /// Applying inner value to provided function (monadic bind)
+        /// </summary>
+        public Option<R> Bind<R>(Func<T, Option<R>> f) =>
+            IsSome ? f(Value) :
+            None;
+
+
+        public override string ToString() =>
+            Match(
+                ifSome: x => $"Option - Some({x.ToString()})",
+                ifNone: () => "Option - None");
 
 
         // ---------- Enumerables ----------

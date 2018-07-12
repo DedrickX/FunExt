@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+using static FunExt.Lib.F;
+
 
 namespace FunExt.Lib
 {
@@ -46,6 +48,28 @@ namespace FunExt.Lib
         public R Match<R>(Func<T, R> ifSuccess, Func<Exception, R> ifFailure) =>
             IsSuccess ? ifSuccess(Value) :
             ifFailure(Error);
+
+
+        /// <summary>
+        /// Applying inner value to provided function (functor map)
+        /// </summary>
+        public Result<R> Map<R>(Func<T, R> f) =>
+            IsSuccess ? Success(f(Value)) :
+            Failure(Error);
+
+
+        /// <summary>
+        /// Applying inner value to provided function (monadic bind)
+        /// </summary>
+        public Result<R> Bind<R>(Func<T, Result<R>> f) =>
+            IsSuccess ? f(Value) :
+            Failure(Error);
+
+
+        public override string ToString() =>
+            Match(
+                ifSuccess: x => $"Result - Success({x.ToString()})",
+                ifFailure: x => $"Result - Failure({x.Message})");
 
 
         // ---------- Enumerables ----------

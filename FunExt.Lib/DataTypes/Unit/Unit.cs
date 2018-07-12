@@ -29,10 +29,12 @@ public struct Unit :
             obj is Unit;
 
 
-        public bool Equals(Unit other) => true;
+        public bool Equals(Unit other) =>
+            true;
 
 
-        public int CompareTo(Unit other) => 0;
+        public int CompareTo(Unit other) =>
+            0;
 
 
         public static bool operator ==(Unit left, Unit right) =>
