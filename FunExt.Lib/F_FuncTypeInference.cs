@@ -18,7 +18,7 @@ namespace FunExt.Lib
         public static Func<Unit> Fun(Action f) =>
             () => {
                 f();
-                return UnitValue;
+                return unit;
             };
 
 
@@ -28,7 +28,7 @@ namespace FunExt.Lib
         public static Func<T1, Unit> Fun<T1>(Action<T1> f) =>
             (T1 x1) => {
                 f(x1);
-                return UnitValue;
+                return unit;
             };
 
 
@@ -38,7 +38,7 @@ namespace FunExt.Lib
         public static Func<T1, T2, Unit> Fun<T1, T2>(Action<T1, T2> f) =>
             (T1 x1, T2 x2) => {
                 f(x1, x2);
-                return UnitValue;
+                return unit;
             };
 
 
@@ -48,7 +48,7 @@ namespace FunExt.Lib
         public static Func<T1, T2, T3, Unit> Fun<T1, T2, T3>(Action<T1, T2, T3> f) =>
             (T1 x1, T2 x2, T3 x3) => {
                 f(x1, x2, x3);
-                return UnitValue;
+                return unit;
             };
 
 
@@ -58,7 +58,7 @@ namespace FunExt.Lib
         public static Func<T1, T2, T3, T4, Unit> Fun<T1, T2, T3, T4>(Action<T1, T2, T3, T4> f) =>
             (T1 x1, T2 x2, T3 x3, T4 x4) => {
                 f(x1, x2, x3, x4);
-                return UnitValue;
+                return unit;
             };
 
 

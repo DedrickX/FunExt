@@ -15,7 +15,8 @@ namespace FunExt.Lib
     ///    - None
     /// </remarks>
     public struct Option<T> :
-        IEnumerable<T>
+        IEnumerable<T>,
+        IEquatable<Option<T>>
     {
 
         internal Option(bool isSome, T value)

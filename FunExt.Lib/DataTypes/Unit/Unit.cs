@@ -6,7 +6,9 @@ namespace FunExt.Lib
 /// <summary>
 /// Unit value
 /// </summary>
-public struct Unit : IEquatable<Unit>, IComparable<Unit>
+public struct Unit :
+        IEquatable<Unit>,
+        IComparable<Unit>
     {
 
         /// <summary>
@@ -15,13 +17,16 @@ public struct Unit : IEquatable<Unit>, IComparable<Unit>
         public static readonly Unit Default = new Unit();
 
 
-        public override string ToString() => "()";
+        public override string ToString() =>
+            "()";
 
 
-        public override int GetHashCode() => 0;
+        public override int GetHashCode() =>
+            0;
 
 
-        public override bool Equals(object obj) => obj is Unit;
+        public override bool Equals(object obj) =>
+            obj is Unit;
 
 
         public bool Equals(Unit other) => true;
@@ -36,22 +41,6 @@ public struct Unit : IEquatable<Unit>, IComparable<Unit>
 
         public static bool operator !=(Unit left, Unit right) =>
             false;
-
-
-        public static bool operator >(Unit left, Unit right) =>
-            false;
-
-
-        public static bool operator >=(Unit left, Unit right) =>
-            true;
-
-
-        public static bool operator <(Unit left, Unit right) =>
-            false;
-
-
-        public static bool operator <=(Unit left, Unit right) =>
-            true;
 
     }
 }
