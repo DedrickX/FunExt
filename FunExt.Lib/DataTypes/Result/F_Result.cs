@@ -1,7 +1,9 @@
 using System;
 
+
 namespace FunExt.Lib
 {
+
     public static partial class F
     {
 
@@ -9,6 +11,15 @@ namespace FunExt.Lib
         /// Succesful result for use with <see cref="Result{T}"/>.
         /// </summary>
         public static Result<T> Success<T>(T value) =>
+            (value == null) ? throw new ArgumentNullException() :
+            new Result<T>(true, value, null);
+
+
+        /// <summary>
+        /// Creates Success Result if argument is not null, otherwise returns Failure Result.
+        /// </summary>
+        public static Result<T> SuccessIfNotNull<T>(T value) =>
+            (value == null) ? new ArgumentNullException() :
             new Result<T>(true, value, null);
 
 
@@ -16,7 +27,7 @@ namespace FunExt.Lib
         /// Failure result for use with <see cref="Result{T}"/>.
         /// </summary>
         public static Exception Failure(Exception ex) =>
-            ex;
+            ex ?? throw new ArgumentNullException();
 
 
         /// <summary>
@@ -29,4 +40,5 @@ namespace FunExt.Lib
             new Exception(failureMessage);
 
     }
+
 }

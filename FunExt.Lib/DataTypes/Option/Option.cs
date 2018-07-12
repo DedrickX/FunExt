@@ -2,10 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-using FunExt.Lib.DataTypes;
+using static FunExt.Lib.F;
+
 
 namespace FunExt.Lib
 {
+
     /// <summary>
     /// Union Type representing possible value of T
     /// </summary>
@@ -14,10 +16,9 @@ namespace FunExt.Lib
     ///    - Some of T
     ///    - None
     /// </remarks>
-    public partial class Option<T> :
-        IEquatable<Option<T>>,
+    public struct Option<T> :
         IEnumerable<T>,
-        IMonadicLR<OptionNone, T>
+        IEquatable<Option<T>>
     {
 
         internal Option(bool isSome, T value)
@@ -47,31 +48,31 @@ namespace FunExt.Lib
         /// </summary>
         /// <param name="ifSome">Function executed when value is <see cref="Common.Some{T}"/></param>
         /// <param name="ifNone">Function executed when value is <see cref="Common.Option_None"/></param>
-        public R Match<R>(Func<T, R> ifSome, Func<OptionNone, R> ifNone) =>
+        public R Match<R>(Func<T, R> ifSome, Func<R> ifNone) =>
             IsSome ? ifSome(Value) :
-            ifNone(F.None);
+            ifNone();
 
 
         /// <summary>
-        /// Applying function into inner value of Option. If Option is None, nothing happens.
-        /// Functor map.
+        /// Applying inner value to provided function (functor map)
+        /// </summary>
         public Option<R> Map<R>(Func<T, R> f) =>
-            (Option<R>) MonadicOperations.Map(this, f);
+            IsSome ? Some(f(Value)) :
+            None;
 
 
         /// <summary>
-        /// Applying function into inner value of Option. If Option is None, nothing happens.
-        /// Monadic bind.
+        /// Applying inner value to provided function (monadic bind)
+        /// </summary>
         public Option<R> Bind<R>(Func<T, Option<R>> f) =>
-            (Option<R>) MonadicOperations.Bind(this, f);
+            IsSome ? f(Value) :
+            None;
 
 
-        public IMonadicLR<OptionNone, B> Return<B>(B rightValue) =>
-            new Option<B>(true, rightValue);
-
-
-        public IMonadicLR<OptionNone, B> ReturnLeft<B>(OptionNone leftValue) =>
-            new Option<B>(false, default(B));
+        public override string ToString() =>
+            Match(
+                ifSome: x => $"Option - Some({x.ToString()})",
+                ifNone: () => "Option - None");
 
 
         // ---------- Enumerables ----------
@@ -92,7 +93,7 @@ namespace FunExt.Lib
 
 
         public override bool Equals(object obj) =>
-            Equals(obj as Option<T>);
+            Equals((Option<T>) obj);
 
 
         public bool Equals(Option<T> other) =>
@@ -113,8 +114,14 @@ namespace FunExt.Lib
             !(@this == other);
 
 
+        public static implicit operator Option<T>(T value) =>
+            typeof(T).IsValueType ? new Option<T>(true, value) :
+            new Option<T>(value != null, value);
+
+
         public static implicit operator Option<T>(OptionNone _) =>
             new Option<T>(false, default(T));
 
     }
+
 }

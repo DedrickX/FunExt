@@ -7,10 +7,22 @@ using FluentAssertions;
 using FunExt.Lib;
 using static FunExt.Lib.F;
 
+
 namespace FunExt.Tests.Lib
 {
     public class Option_Should
     {
+
+        [Fact]
+        public void BeNoneByDefault()
+        {
+            Option<int> i = new Option<int>();
+            i.IsNone.Should().BeTrue();
+
+            Option<Exception> e = new Option<Exception>();
+            e.IsNone.Should().BeTrue();
+        }
+
 
         [Fact]
         public void BeUsedWithSomeType()
@@ -21,11 +33,28 @@ namespace FunExt.Tests.Lib
             someOption.IsNone.Should().BeFalse();
             someOption.Match(
                 ifSome: x => x.Should().Be(10),
-                ifNone: _ => throw new Exception("Value is none!?")
+                ifNone: () => throw new Exception("Value is none!?")
             );
         }
 
 
+        [Fact]
+        public void ThrowExceptionIfSomeIsNull()
+        {           
+            this.Invoking((x) => { Option<int?> s = Some<int?>(null); })
+                .Should()
+                .Throw<ArgumentNullException>();
+
+            this.Invoking((x) => { Option<string> s = Some<string>(null); })
+                .Should()
+                .Throw<ArgumentNullException>();
+
+            this.Invoking((x) => { Option<Exception> s = Some<Exception>(null); })
+                .Should()
+                .Throw<ArgumentNullException>();
+        }
+
+        
         [Fact]
         public void BeUsedWithNoneType()
         {
@@ -37,13 +66,24 @@ namespace FunExt.Tests.Lib
 
 
         [Fact]
+        public void BeUsedWithSomeIfNotNullHelper()
+        {
+            Option<string> someString = SomeIfNotNull("hello");
+            someString.IsSome.Should().BeTrue();
+
+            Option<string> noneString = SomeIfNotNull<string>(null);
+            noneString.IsNone.Should().BeTrue();
+        }
+        
+
+        [Fact]
         public void BeMatchedWhenSome()
         {
             Option<int> someOption = Some(10);
 
             var result = someOption.Match(
                 ifSome: x => x,
-                ifNone: _ => throw new Exception("Value is none!?")
+                ifNone: () => throw new Exception("Value is none!?")
             );
             result.Should().Be(10);
         }
@@ -56,7 +96,7 @@ namespace FunExt.Tests.Lib
 
             var result = noneOption.Match(
                 ifSome: x => throw new Exception("Value is Some!?"),
-                ifNone: _ => "Ok"
+                ifNone: () => "Ok"
             );
             result.Should().Be("Ok");
         }
@@ -145,7 +185,9 @@ namespace FunExt.Tests.Lib
         public void BeUsedWithConditionalExpression()
         {
             var path = @"C:\";
-            Option<string> x = !string.IsNullOrEmpty(path) ? Some("text") : None;
+            Option<string> x = !string.IsNullOrEmpty(path) ? Some("text") : 
+                None;
+
             x.IsSome.Should().BeTrue();
         }
 
@@ -181,7 +223,7 @@ namespace FunExt.Tests.Lib
             result.IsSome.Should().BeTrue();
             var resultValue = result.Match(
                 ifSome: (string x) => x,
-                ifNone: _ => throw new Exception("Value is none!?")
+                ifNone: () => throw new Exception("Value is none!?")
             );
             resultValue.Should().Be("Number 10!");
         }
@@ -204,7 +246,8 @@ namespace FunExt.Tests.Lib
         public void BindWhenSome()
         {
             Option<string> f(int x) =>
-                x >= 0 ? Some($"Number {x} is positive!") : None;
+                x >= 0 ? Some($"Number {x} is positive!") : 
+                None;
 
             // positive value
             Option<int> somePositiveValue = Some(10);
@@ -213,7 +256,7 @@ namespace FunExt.Tests.Lib
             positiveResult.IsSome.Should().BeTrue();
             var resultValue = positiveResult.Match(
                 ifSome: (string x) => x,
-                ifNone: _ => throw new Exception("Value is none!?")
+                ifNone: () => throw new Exception("Value is none!?")
             );
             resultValue.Should().Be("Number 10 is positive!");
 
@@ -229,7 +272,8 @@ namespace FunExt.Tests.Lib
         public void BindWhenNone()
         {
             Option<string> f(int x) =>
-                x >= 0 ? Some($"Number {x} is positive!") : None;
+                x >= 0 ? Some($"Number {x} is positive!") : 
+                None;
 
             // positive value
             Option<int> noneValue = None;

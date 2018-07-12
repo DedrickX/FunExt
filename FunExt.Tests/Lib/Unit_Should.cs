@@ -13,8 +13,8 @@ namespace FunExt.Tests.Lib
         [Fact]
         void BeEquatable()
         {
-            Unit unit1 = UnitValue;
-            Unit unit2 = UnitValue;
+            Unit unit1 = unit;
+            Unit unit2 = unit;
 
             (unit1 == unit2).Should().BeTrue();
             (unit1 != unit2).Should().BeFalse();
@@ -24,8 +24,8 @@ namespace FunExt.Tests.Lib
         [Fact]
         void BeComparable()
         {
-            var unit1 = UnitValue;
-            var unit2 = UnitValue;
+            var unit1 = unit;
+            var unit2 = unit;
 
             (unit1.CompareTo(unit2)).Should().Be(0);
         }
@@ -34,8 +34,8 @@ namespace FunExt.Tests.Lib
         [Fact]
         void HaveExactHashCode()
         {
-            var unit1 = UnitValue;
-            var unit2 = UnitValue;
+            var unit1 = unit;
+            var unit2 = unit;
 
             (unit1.GetHashCode() == unit2.GetHashCode())
                 .Should().BeTrue();
